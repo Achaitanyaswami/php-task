@@ -1,78 +1,35 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Laravel 6.x task
+### Summary	
+This is a laravel 6.x project to develop the REST API for customers and providers. 
+Using following technologies:
+- Mysql 5.7+
+- Php 7.2
+- Laravel 6.0
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+### Introduction
+In this project, there is a two types of users i.e. `Customer` and `Provider`. Users with `Provider` role can create a `Provider Profile`. Additonally, provider will select the `services` he offers along with the price of each `service`. `Provider` will select these `services` from existing list, it will be the choice of `provider` to either choose the same price as in list or he can choose to enter his own price . `Customers` will search for nearby `providers` for example all the providers located with in **2KM** distance from user's location. `Customer` can send a request to a `provider`. Upon receiving the request, `provider` can either `accept` or `reject` the request. All rejected requests or requests older than 24 hours should be cleared from database every day.
 
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Additional Information
+- Created a `services` table with `title, price`. Usind the seeders in laravel to initialize the database with initial catgories
+- Created a `users` table with `name, email, mobile_number, latitude, longitude`.
+- Assigned `customer` or `provider` role to a user
+- Created a `provider_profiles` table with `name, description, latitude, longitude`
+- Every `provider` can choose muliple services i.e each provider can belong to many categories
+- For each selected `service`, provider can choose the already defined price in `service` or can enter his own price
+	- For example, suppose we have following `services` in database
+		1. Category 1 with price 10,
+		2. Category 2 with price 20
+		
+		Now, `Provider 1` select the services 'Service 1' and 'Service 2' i.e. provider belongs to both of these services
+		
+		- For `Service 1` provider can decide to keep same price as defined i.e 10.
+		- But for `Service 2` store an decide to change the price to 30
+- Created REST APIs for following operations
+	- Login and registration for customer and provider
+	- Customer APIs:
+		- **Note**: These APIs are accesbile only from `customer` credentials. These APIs is not be accessible if I login using `provider` credentials:
+		- List all nearby `providers` i.e. providers located with in 2KM from customer's location
+		- Send a request to `provider`
+	- Provider APIs:
+		- Update `provider profile` along with `services` that this provider belongs to
+		- `accept` or `reject` customer request
